@@ -218,58 +218,33 @@ public:
 
         if (auto methodNode = dynamic_cast<MethodCallNode*>(node)) {
             Value objVal = eval(methodNode->object.get(), env);
-            std::string method = methodNode->methodName;
+            std::string typeName = std::holds_alternative<std::string>(objVal) ? "string" : "double";
+            std::string methodKey = typeName + "_" + methodNode->methodName;
 
-            if (std::holds_alternative<std::string>(objVal)) {
-                std::string str = std::get<std::string>(objVal);
-                StringObject strObj(str);
-
-                if (method == "get_length" || method == "length") {
-                    return strObj.get_length();
+            if (NativeRegistry::instance().hasFunc(methodKey)) {
+                std::vector<Value> callArgs;
+                callArgs.push_back(objVal);
+                for (const auto& arg : methodNode->args) {
+                    callArgs.push_back(eval(arg.get(), env));
                 }
-
-                if (method == "to_upper") {
-                    std::string uStr = strObj.to_upper();
-                    if (auto varNode = dynamic_cast<VariableNode*>(methodNode->object.get())) {
-                        env->set(varNode->name, uStr);
-                    }
-                    return uStr;
-                }
-
-                if (method == "to_lower") {
-                    std::string lStr = strObj.to_lower();
-                    if (auto varNode = dynamic_cast<VariableNode*>(methodNode->object.get())) {
-                        env->set(varNode->name, lStr);
-                    }
-                    return lStr;
-                }
-
-                if (method == "append" && !methodNode->args.empty()) {
-                    Value arg = eval(methodNode->args[0].get(), env);
-                    std::string sArg = valueToString(arg);
-                    if (!sArg.empty()) {
-                        strObj.append(sArg[0]);
-                        if (auto varNode = dynamic_cast<VariableNode*>(methodNode->object.get())) {
-                            env->set(varNode->name, strObj.value);
-                        }
-                        return strObj.value;
+                Value resVal = NativeRegistry::instance().call(methodKey, callArgs);
+                if (auto varNode = dynamic_cast<VariableNode*>(methodNode->object.get())) {
+                    if (std::holds_alternative<std::string>(resVal) && std::holds_alternative<std::string>(objVal)) {
+                        env->set(varNode->name, resVal);
                     }
                 }
+                return resVal;
             }
             return 0.0;
         }
 
         if (auto memberNode = dynamic_cast<MemberAccessNode*>(node)) {
             Value objVal = eval(memberNode->object.get(), env);
-            std::string member = memberNode->memberName;
+            std::string typeName = std::holds_alternative<std::string>(objVal) ? "string" : "double";
+            std::string memberKey = typeName + "_" + memberNode->memberName;
 
-            if (std::holds_alternative<std::string>(objVal)) {
-                std::string str = std::get<std::string>(objVal);
-                StringObject strObj(str);
-
-                if (member == "length" || member == "get_length") {
-                    return strObj.get_length();
-                }
+            if (NativeRegistry::instance().hasFunc(memberKey)) {
+                return NativeRegistry::instance().call(memberKey, {objVal});
             }
             return 0.0;
         }
