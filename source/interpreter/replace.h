@@ -123,13 +123,13 @@ inline void readReplaceRules() {
                                         doFile += ".h";
                                     }
 
-                                    std::string targetHeaderPath = doDir + "/" + doFile;
+                                    fs::path targetHeaderPath = fs::path(doDir) / doFile;
                                     if (!fs::exists(targetHeaderPath)) {
-                                        std::cerr << "[FATAL] 动态扩展规则配置错误 [" << path << "]: 指定的 C++ 实现文件不存在: " << targetHeaderPath << "，程序已停止解释！" << std::endl;
+                                        std::cerr << "[FATAL] 动态扩展规则配置错误 [" << path << "]: 指定的 C++ 实现文件不存在: " << targetHeaderPath.string() << "，程序已停止解释！" << std::endl;
                                         throw std::runtime_error("找不到 ./lang/do/ 下对应的 .h 实现文件: " + doFile);
                                     }
 
-                                    std::cout << "[SUCCESS] 校验并装载自定义 C++ 拓展实现: " << targetHeaderPath << std::endl;
+                                    std::cout << "[SUCCESS] 校验并装载自定义 C++ 拓展实现: " << targetHeaderPath.string() << std::endl;
 
                                     std::string toVal = val.value("to", key);
                                     std::string cleanKey = cleanParamPlaceholders(key);
