@@ -29,8 +29,17 @@
                     ]
                 },
                 {
-                    "name": "添加字符",
-                    "do": "append",
+                    "name": "包含（{1}）",
+                    "do": "contains",
+                    "type": "function",
+                    "privacy": "public",
+                    "params": [
+                        { "name": "{1}", "type": "string" }
+                    ]
+                },
+                {
+                    "name": "包含",
+                    "do": "contains",
                     "type": "function",
                     "privacy": "public",
                     "params": []

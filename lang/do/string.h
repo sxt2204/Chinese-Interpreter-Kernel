@@ -69,4 +69,11 @@ REGISTER_NATIVE_FUNC(string_append, [](const std::vector<Value>& args) -> Value 
     return obj.value;
 });
 
+REGISTER_NATIVE_FUNC(string_contains, [](const std::vector<Value>& args) -> Value {
+    if (args.size() < 2) return 0.0;
+    std::string str = valueToString(args[0]);
+    std::string sub = valueToString(args[1]);
+    return StringObject(str).contains(sub);
+});
+
 #endif
