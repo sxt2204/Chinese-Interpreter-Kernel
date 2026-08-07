@@ -2,8 +2,11 @@
     "title": "functions",
     "keywords": {
         "定义函数": "function",
+        "定义": "function",
+        "函数定义": "function",
         "函数": "function",
         "返回": "return",
+        "返回结果": "return",
         "主程序": "main",
         "无返回值": "void",
         "输入参数": "params"

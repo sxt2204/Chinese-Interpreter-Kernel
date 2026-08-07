@@ -2,8 +2,12 @@
     "title": "io",
     "keywords": {
         "输入": "input",
+        "读取输入": "input",
         "输出": "output",
+        "控制台输出": "output",
         "换行": "newline",
-        "输出并换行": "print_line"
+        "输出并换行": "print_line",
+        "打印": "print_line",
+        "打印并换行": "print_line"
     }
 }

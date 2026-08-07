@@ -1,0 +1,48 @@
+{
+    "title": "string_extension",
+    "keywords": {
+        "字符串": {
+            "to": "string",
+            "type": "class",
+            "members": [
+                {
+                    "name": "获取长度（）",
+                    "do": "get_length",
+                    "type": "function",
+                    "privacy": "public",
+                    "params": []
+                },
+                {
+                    "name": "获取长度",
+                    "do": "get_length",
+                    "type": "function",
+                    "privacy": "public",
+                    "params": []
+                },
+                {
+                    "name": "添加字符（{1}）",
+                    "do": "append",
+                    "type": "function",
+                    "privacy": "public",
+                    "params": [
+                        { "name": "{1}", "type": "char" }
+                    ]
+                },
+                {
+                    "name": "添加字符",
+                    "do": "append",
+                    "type": "function",
+                    "privacy": "public",
+                    "params": []
+                },
+                {
+                    "name": "长度",
+                    "do": "length",
+                    "type": "variable",
+                    "privacy": "public"
+                }
+            ],
+            "do": "string.h"
+        }
+    }
+}

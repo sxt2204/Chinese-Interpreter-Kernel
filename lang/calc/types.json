@@ -2,19 +2,28 @@
     "title": "types",
     "keywords": {
         "整数": "int",
+        "长整数": "long",
+        "短整数": "short",
         "小数": "float",
+        "浮点数": "float",
         "双精度小数": "double",
+        "双精度": "double",
         "文本": "string",
+        "字符串": "string",
         "开关": "bool",
+        "布尔": "bool",
         "字符": "char",
         "列表": "list",
+        "数组": "array",
         "字典": "dict",
+        "哈希映射": "map",
         "坐标": "vec2",
         "三维坐标": "vec3",
         "颜色": "color",
         "角色": "sprite",
         "音效": "sound",
         "任意": "any",
-        "无": "void"
+        "无": "void",
+        "无类型": "void"
     }
 }

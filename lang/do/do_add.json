@@ -1,0 +1,14 @@
+{
+    "title": "add_extension",
+    "keywords": {
+        "add（{1}，{2}）": {
+            "to": "do_add（{1}，{2}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" },
+                { "name": "{2}", "type": "double" }
+            ],
+            "do": "do_add.h"
+        }
+    }
+}
