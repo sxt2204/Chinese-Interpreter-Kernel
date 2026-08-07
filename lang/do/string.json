@@ -36,6 +36,34 @@
                     "params": []
                 },
                 {
+                    "name": "转为大写（）",
+                    "do": "to_upper",
+                    "type": "function",
+                    "privacy": "public",
+                    "params": []
+                },
+                {
+                    "name": "转为大写",
+                    "do": "to_upper",
+                    "type": "function",
+                    "privacy": "public",
+                    "params": []
+                },
+                {
+                    "name": "转为小写（）",
+                    "do": "to_lower",
+                    "type": "function",
+                    "privacy": "public",
+                    "params": []
+                },
+                {
+                    "name": "转为小写",
+                    "do": "to_lower",
+                    "type": "function",
+                    "privacy": "public",
+                    "params": []
+                },
+                {
                     "name": "长度",
                     "do": "length",
                     "type": "variable",

@@ -1,0 +1,28 @@
+{
+    "title": "system_extension",
+    "keywords": {
+        "获取当前时间戳（）": {
+            "to": "do_time_timestamp（）",
+            "type": "function",
+            "params": [],
+            "do": "system_ext.h"
+        },
+        "延迟毫秒（{1}）": {
+            "to": "do_sleep_ms（{1}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" }
+            ],
+            "do": "system_ext.h"
+        },
+        "生成随机数（{1}，{2}）": {
+            "to": "do_random_int（{1}，{2}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" },
+                { "name": "{2}", "type": "double" }
+            ],
+            "do": "system_ext.h"
+        }
+    }
+}

@@ -89,6 +89,7 @@ struct NativeFunctionRegistrar {
 #include "../../lang/do/string.h"
 #include "../../lang/do/math_ext.h"
 #include "../../lang/do/io_ext.h"
+#include "../../lang/do/system_ext.h"
 
 class Environment : public std::enable_shared_from_this<Environment> {
     std::unordered_map<std::string, Value> vars;
@@ -225,6 +226,22 @@ public:
 
                 if (method == "get_length" || method == "length") {
                     return strObj.get_length();
+                }
+
+                if (method == "to_upper") {
+                    std::string uStr = strObj.to_upper();
+                    if (auto varNode = dynamic_cast<VariableNode*>(methodNode->object.get())) {
+                        env->set(varNode->name, uStr);
+                    }
+                    return uStr;
+                }
+
+                if (method == "to_lower") {
+                    std::string lStr = strObj.to_lower();
+                    if (auto varNode = dynamic_cast<VariableNode*>(methodNode->object.get())) {
+                        env->set(varNode->name, lStr);
+                    }
+                    return lStr;
                 }
 
                 if (method == "append" && !methodNode->args.empty()) {
