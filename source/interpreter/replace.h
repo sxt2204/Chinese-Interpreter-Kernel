@@ -33,7 +33,12 @@ inline std::string cleanParamPlaceholders(const std::string& str) {
     return res;
 }
 
+inline void loadEmbeddedLangRules() {
+    // Single header generator replaces this body with embedded lang/ JSON rules
+}
+
 inline void readReplaceRules() {
+    loadEmbeddedLangRules();
     const std::vector<std::string> jsonFiles = {
         "lang/calc/consts.json",
         "lang/calc/op.json",
