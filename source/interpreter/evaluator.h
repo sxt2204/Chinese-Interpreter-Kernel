@@ -90,6 +90,7 @@ struct NativeFunctionRegistrar {
 #include "../../lang/do/math_ext.h"
 #include "../../lang/do/io_ext.h"
 #include "../../lang/do/system_ext.h"
+#include "../../lang/do/file_ext.h"
 
 class Environment : public std::enable_shared_from_this<Environment> {
     std::unordered_map<std::string, Value> vars;
