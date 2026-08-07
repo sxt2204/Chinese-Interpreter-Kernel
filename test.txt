@@ -1,1 +1,0 @@
-Hello Chinese Compiler File IO! Appended line!

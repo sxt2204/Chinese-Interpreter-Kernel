@@ -10,3 +10,7 @@ test
 .DS_Store
 .vscode/
 .idea/
+
+# Compiled folders
+output/
+build/
