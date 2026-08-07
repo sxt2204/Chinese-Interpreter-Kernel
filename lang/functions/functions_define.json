@@ -1,0 +1,17 @@
+{
+    "title": "functions",
+    "keywords": {
+        "定义函数": "function",
+        "函数": "function",
+        "返回": "return",
+        "主程序": "main",
+        "无返回值": "void",
+        "输入参数": "params"
+    },
+    "patterns": {
+        "定义函数 {0}（{1}）": "func {0}({1})",
+        "返回 {0}": "return {0}",
+        "调用 {0}（{1}）": "{0}({1})",
+        "主程序（）": "int main()"
+    }
+}

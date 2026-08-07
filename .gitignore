@@ -1,0 +1,12 @@
+# Compiled binaries
+test
+*.o
+*.a
+*.so
+*.dylib
+*.out
+
+# OS / Editor files
+.DS_Store
+.vscode/
+.idea/

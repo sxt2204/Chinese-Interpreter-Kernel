@@ -1,0 +1,71 @@
+{
+    "title": "math_extension",
+    "keywords": {
+        "开平方根（{1}）": {
+            "to": "do_sqrt（{1}）",
+            "type": "function",
+            "params": [ { "name": "{1}", "type": "double" } ],
+            "do": "math_ext.h"
+        },
+        "绝对值（{1}）": {
+            "to": "do_abs（{1}）",
+            "type": "function",
+            "params": [ { "name": "{1}", "type": "double" } ],
+            "do": "math_ext.h"
+        },
+        "向上取整（{1}）": {
+            "to": "do_ceil（{1}）",
+            "type": "function",
+            "params": [ { "name": "{1}", "type": "double" } ],
+            "do": "math_ext.h"
+        },
+        "向下取整（{1}）": {
+            "to": "do_floor（{1}）",
+            "type": "function",
+            "params": [ { "name": "{1}", "type": "double" } ],
+            "do": "math_ext.h"
+        },
+        "四舍五入（{1}）": {
+            "to": "do_round（{1}）",
+            "type": "function",
+            "params": [ { "name": "{1}", "type": "double" } ],
+            "do": "math_ext.h"
+        },
+        "求最大值（{1}，{2}）": {
+            "to": "do_max（{1}，{2}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" },
+                { "name": "{2}", "type": "double" }
+            ],
+            "do": "math_ext.h"
+        },
+        "求最小值（{1}，{2}）": {
+            "to": "do_min（{1}，{2}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" },
+                { "name": "{2}", "type": "double" }
+            ],
+            "do": "math_ext.h"
+        },
+        "求正弦（{1}）": {
+            "to": "do_sin（{1}）",
+            "type": "function",
+            "params": [ { "name": "{1}", "type": "double" } ],
+            "do": "math_ext.h"
+        },
+        "求余弦（{1}）": {
+            "to": "do_cos（{1}）",
+            "type": "function",
+            "params": [ { "name": "{1}", "type": "double" } ],
+            "do": "math_ext.h"
+        },
+        "求正切（{1}）": {
+            "to": "do_tan（{1}）",
+            "type": "function",
+            "params": [ { "name": "{1}", "type": "double" } ],
+            "do": "math_ext.h"
+        }
+    }
+}

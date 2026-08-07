@@ -1,0 +1,18 @@
+=== 从 ./test.txt 读取并执行 ===
+[LOG] 开始解析语言规则库...
+[LOG] 正在加载文件: lang/calc/consts.json
+[SUCCESS] 模块 [consts] 加载完成，成功注入 24 条词条
+[LOG] 正在加载文件: lang/calc/op.json
+[SUCCESS] 模块 [operators] 加载完成，成功注入 10 条词条
+[LOG] 正在加载文件: lang/calc/types.json
+[SUCCESS] 模块 [types] 加载完成，成功注入 15 条词条
+[LOG] 正在加载文件: lang/control/control_flow.json
+[SUCCESS] 模块 [control_flow] 加载完成，成功注入 4 条词条
+[LOG] 正在加载文件: lang/control/comp.json
+[SUCCESS] 模块 [comp] 加载完成，成功注入 4 条词条
+[LOG] 正在加载文件: lang/functions/functions_define.json
+[SUCCESS] 模块 [functions] 加载完成，成功注入 7 条词条
+[LOG] 正在加载文件: lang/io/io_main.json
+[SUCCESS] 模块 [io] 加载完成，成功注入 4 条词条
+[LOG] 规则初始化结束，符号映射表累计存入 68 条映射 (总规则数: 68)
+你好， ELECTRON_RUN_AS_NODE=1 PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/node_modules.asar.unpacked/@vscode/ripgrep-universal/bin/darwin-arm64" TMPDIR="/Users/sxt2204/.vscode/tmp/tmp_vscode_3" CLAUDE_TMPDIR="/Users/sxt2204/.vscode/tmp/tmp_vscode_3" "/Applications/Visual Studio Code.app/Contents/MacOS/Code" "/Applications/Visual Studio Code.app/Contents/Resources/app/node_modules/@vscode/sandbox-runtime/dist/cli.js" --settings "/Users/sxt2204/.vscode/tmp/tmp_vscode_3/vscode-sandbox-settings-946645fa-f256-4161-82cd-a5c7f7c51a51.json" -c 'cd /Users/sxt2204/Chinese\ Complier && mkdir -p output && g++ -std=c++17 -I. test.cpp -o output/test && ./output/test | head -n 20'

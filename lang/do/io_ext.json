@@ -1,0 +1,23 @@
+{
+    "title": "io_extension",
+    "keywords": {
+        "输出并换行（{1}）": {
+            "to": "do_print_line（{1}）",
+            "type": "function",
+            "params": [ { "name": "{1}", "type": "string" } ],
+            "do": "io_ext.h"
+        },
+        "输出（{1}）": {
+            "to": "do_output（{1}）",
+            "type": "function",
+            "params": [ { "name": "{1}", "type": "string" } ],
+            "do": "io_ext.h"
+        },
+        "输入（）": {
+            "to": "do_input（）",
+            "type": "function",
+            "params": [],
+            "do": "io_ext.h"
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "title": "types",
+    "keywords": {
+        "整数": "int",
+        "小数": "float",
+        "双精度小数": "double",
+        "文本": "string",
+        "开关": "bool",
+        "字符": "char",
+        "列表": "list",
+        "字典": "dict",
+        "坐标": "vec2",
+        "三维坐标": "vec3",
+        "颜色": "color",
+        "角色": "sprite",
+        "音效": "sound",
+        "任意": "any",
+        "无": "void"
+    }
+}

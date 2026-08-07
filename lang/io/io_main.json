@@ -1,0 +1,9 @@
+{
+    "title": "io",
+    "keywords": {
+        "输入": "input",
+        "输出": "output",
+        "换行": "newline",
+        "输出并换行": "print_line"
+    }
+}

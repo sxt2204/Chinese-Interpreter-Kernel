@@ -1,0 +1,48 @@
+{
+    "title": "这里写这个文件的标题",
+    "keywords": {
+        "这是一个函数{1}{2}": {
+            "to": "这里写翻译后的英文名({1}{2})",
+            "type": "function",
+            "params": [
+                {
+                    "name": "{1}",
+                    "type": "int"
+                },
+                {
+                    "name": "{2}",
+                    "type": "int"
+                }
+            ],
+            "do": "这里写./lang/do/下的文件名，为.h文件，表示实现的代码，若找不到，则报错并停止解释"
+        },
+        "这是一个类": {
+            "to": "翻译后的英文名",
+            "type": "class",
+            "members": [
+                {
+                    "name": "这是一个成员函数{1}{2}",
+                    "type": "function",
+                    "do": "这里填实现该功能的函数，这个函数必须要在该类里，否则报错并停止解释",
+                    "privacy": "填public/private/protected, 如果没有写则默认为public",
+                    "params": [
+                        {
+                            "name": "{1}",
+                            "type": "int"
+                        },
+                        {
+                            "name": "{2}",
+                            "type": "int"
+                        }
+                    ]
+                },
+                {
+                    "name": "这是一个成员变量{1}{2}",
+                    "type": "variable",
+                    "privacy": "public/private/protected, 如果没有写则默认为public"
+                }
+            ],
+            "do": "这里填实现该类的c++代码，为.h文件，如果没有找到，则报错并停止解释"
+        }
+    }
+}
