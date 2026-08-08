@@ -1,6 +1,7 @@
 #ifndef FILE_EXT_H
 #define FILE_EXT_H
 
+#include "../../source/interpreter/native_registry.h"
 #include <fstream>
 #include <sstream>
 #include <string>

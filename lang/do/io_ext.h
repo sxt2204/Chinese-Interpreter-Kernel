@@ -1,6 +1,7 @@
 #ifndef IO_EXT_H
 #define IO_EXT_H
 
+#include "../../source/interpreter/native_registry.h"
 #include <iostream>
 #include <string>
 

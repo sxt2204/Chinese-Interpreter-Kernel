@@ -1,6 +1,8 @@
 #ifndef DO_ADD_H
 #define DO_ADD_H
 
+#include "../../source/interpreter/native_registry.h"
+
 inline double do_add(double a, double b) {
     return a + b;
 }

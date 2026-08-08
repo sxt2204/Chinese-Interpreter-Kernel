@@ -1,6 +1,6 @@
 // ==========================================================================
 //   Chinese Compiler Kernel v0.2.0 - Single Header Library (全功能单头文件发布包)
-//   内置 nlohmann/json + 完整 lang/ 字典与 C++ 扩展，真正实现零依赖与即插即用！
+//   内置 nlohmann/json + 独立 native_registry.h + 完整 lang/ 字典与 C++ 扩展！
 //   GitHub: https://github.com/sxt2204/Chinese-Interpreter-Kernel
 // ==========================================================================
 
@@ -25546,6 +25546,81 @@ inline void swap(nlohmann::NLOHMANN_BASIC_JSON_TPL& j1, nlohmann::NLOHMANN_BASIC
 #endif  // INCLUDE_NLOHMANN_JSON_HPP_
 // --- End File: source/interpreter/json.hpp ---
 
+// --- Begin File: source/interpreter/native_registry.h ---
+#ifndef NATIVE_REGISTRY_H
+#define NATIVE_REGISTRY_H
+
+#include <string>
+#include <vector>
+#include <variant>
+#include <unordered_map>
+#include <functional>
+#include <iostream>
+
+using Value = std::variant<double, std::string>;
+
+inline std::string valueToString(const Value& val) {
+    if (std::holds_alternative<std::string>(val)) return std::get<std::string>(val);
+    std::string s = std::to_string(std::get<double>(val));
+    if (s.find('.') != std::string::npos) {
+        s.erase(s.find_last_not_of('0') + 1, std::string::npos);
+        if (s.back() == '.') s.pop_back();
+    }
+    return s;
+}
+
+inline double valueToDouble(const Value& val) {
+    if (std::holds_alternative<double>(val)) return std::get<double>(val);
+    try {
+        return std::stod(std::get<std::string>(val));
+    } catch (...) {
+        return 0.0;
+    }
+}
+
+using NativeFunction = std::function<Value(const std::vector<Value>& args)>;
+
+class NativeRegistry {
+private:
+    std::unordered_map<std::string, NativeFunction> funcs;
+    NativeRegistry() = default;
+
+public:
+    static NativeRegistry& instance() {
+        static NativeRegistry reg;
+        return reg;
+    }
+
+    void registerFunc(const std::string& name, NativeFunction fn) {
+        funcs[name] = std::move(fn);
+    }
+
+    bool hasFunc(const std::string& name) const {
+        return funcs.find(name) != funcs.end();
+    }
+
+    Value call(const std::string& name, const std::vector<Value>& args) {
+        auto it = funcs.find(name);
+        if (it != funcs.end()) {
+            return it->second(args);
+        }
+        std::cerr << "[ERROR] 原生 C++ 函数未找到: " << name << std::endl;
+        return 0.0;
+    }
+};
+
+struct NativeFunctionRegistrar {
+    NativeFunctionRegistrar(const std::string& name, NativeFunction fn) {
+        NativeRegistry::instance().registerFunc(name, fn);
+    }
+};
+
+#define REGISTER_NATIVE_FUNC(name, fn) \
+    static NativeFunctionRegistrar _registrar_##name(#name, fn);
+
+#endif // NATIVE_REGISTRY_H
+// --- End File: source/interpreter/native_registry.h ---
+
 // --- Begin File: source/interpreter/ast.h ---
 #ifndef AST_H
 #define AST_H
@@ -26145,8 +26220,6 @@ public:
 #include <memory>
 #include <functional>
 
-using Value = std::variant<double, std::string>;
-
 struct ReturnException {
     Value value;
 };
@@ -26159,67 +26232,11 @@ inline void printValue(const Value& val) {
     }
 }
 
-inline std::string valueToString(const Value& val) {
-    if (std::holds_alternative<double>(val)) {
-        double d = std::get<double>(val);
-        if (d == static_cast<long long>(d)) {
-            return std::to_string(static_cast<long long>(d));
-        }
-        return std::to_string(d);
-    }
-    return std::get<std::string>(val);
-}
-
-inline double valueToDouble(const Value& val) {
-    if (std::holds_alternative<double>(val)) return std::get<double>(val);
-    try { return std::stod(std::get<std::string>(val)); } catch (...) { return 0.0; }
-}
-
 inline std::string readInputLine() {
     std::string line;
     std::getline(std::cin, line);
     return line;
 }
-
-using NativeFunction = std::function<Value(const std::vector<Value>& args)>;
-
-class NativeRegistry {
-private:
-    std::unordered_map<std::string, NativeFunction> functions;
-
-    NativeRegistry() = default;
-
-public:
-    static NativeRegistry& instance() {
-        static NativeRegistry reg;
-        return reg;
-    }
-
-    void registerFunc(const std::string& name, NativeFunction fn) {
-        functions[name] = std::move(fn);
-    }
-
-    bool hasFunc(const std::string& name) const {
-        return functions.find(name) != functions.end();
-    }
-
-    Value call(const std::string& name, const std::vector<Value>& args) const {
-        auto it = functions.find(name);
-        if (it != functions.end()) {
-            return it->second(args);
-        }
-        return 0.0;
-    }
-};
-
-struct NativeFunctionRegistrar {
-    NativeFunctionRegistrar(const std::string& name, NativeFunction fn) {
-        NativeRegistry::instance().registerFunc(name, fn);
-    }
-};
-
-#define REGISTER_NATIVE_FUNC(name, fn) \
-    static NativeFunctionRegistrar _registrar_##name(#name, fn);
 
 
 class Environment : public std::enable_shared_from_this<Environment> {
@@ -27233,80 +27250,89 @@ inline std::tuple<std::string, std::unordered_map<std::string, std::string>, std
 #ifndef CUSTOM_STRING_H
 #define CUSTOM_STRING_H
 
-#include <string>
 #include <algorithm>
 #include <cctype>
+#include <string>
 
 class StringObject {
 public:
-    std::string value;
+  std::string value;
 
-    explicit StringObject(std::string str = "") : value(std::move(str)) {}
+  explicit StringObject(std::string str = "") : value(std::move(str)) {}
 
-    double get_length() const {
-        return static_cast<double>(value.length());
-    }
+  double get_length() const { return static_cast<double>(value.length()); }
 
-    void append(char c) {
-        value += c;
-    }
+  void append(char c) { value += c; }
 
-    std::string to_upper() const {
-        std::string res = value;
-        std::transform(res.begin(), res.end(), res.begin(), ::toupper);
-        return res;
-    }
+  std::string to_upper() const {
+    std::string res = value;
+    std::transform(res.begin(), res.end(), res.begin(), ::toupper);
+    return res;
+  }
 
-    std::string to_lower() const {
-        std::string res = value;
-        std::transform(res.begin(), res.end(), res.begin(), ::tolower);
-        return res;
-    }
+  std::string to_lower() const {
+    std::string res = value;
+    std::transform(res.begin(), res.end(), res.begin(), ::tolower);
+    return res;
+  }
 
-    double contains(const std::string& sub) const {
-        return (value.find(sub) != std::string::npos) ? 1.0 : 0.0;
-    }
+  double contains(const std::string &sub) const {
+    return (value.find(sub) != std::string::npos) ? 1.0 : 0.0;
+  }
 };
 
-REGISTER_NATIVE_FUNC(string_get_length, [](const std::vector<Value>& args) -> Value {
-    if (args.empty()) return 0.0;
-    std::string str = valueToString(args[0]);
-    return StringObject(str).get_length();
-});
+REGISTER_NATIVE_FUNC(string_get_length,
+                     [](const std::vector<Value> &args) -> Value {
+                       if (args.empty())
+                         return 0.0;
+                       std::string str = valueToString(args[0]);
+                       return StringObject(str).get_length();
+                     });
 
-REGISTER_NATIVE_FUNC(string_length, [](const std::vector<Value>& args) -> Value {
-    if (args.empty()) return 0.0;
-    std::string str = valueToString(args[0]);
-    return StringObject(str).get_length();
-});
+REGISTER_NATIVE_FUNC(string_length,
+                     [](const std::vector<Value> &args) -> Value {
+                       if (args.empty())
+                         return 0.0;
+                       std::string str = valueToString(args[0]);
+                       return StringObject(str).get_length();
+                     });
 
-REGISTER_NATIVE_FUNC(string_to_upper, [](const std::vector<Value>& args) -> Value {
-    if (args.empty()) return "";
-    std::string str = valueToString(args[0]);
-    return StringObject(str).to_upper();
-});
+REGISTER_NATIVE_FUNC(string_to_upper,
+                     [](const std::vector<Value> &args) -> Value {
+                       if (args.empty())
+                         return "";
+                       std::string str = valueToString(args[0]);
+                       return StringObject(str).to_upper();
+                     });
 
-REGISTER_NATIVE_FUNC(string_to_lower, [](const std::vector<Value>& args) -> Value {
-    if (args.empty()) return "";
-    std::string str = valueToString(args[0]);
-    return StringObject(str).to_lower();
-});
+REGISTER_NATIVE_FUNC(string_to_lower,
+                     [](const std::vector<Value> &args) -> Value {
+                       if (args.empty())
+                         return "";
+                       std::string str = valueToString(args[0]);
+                       return StringObject(str).to_lower();
+                     });
 
-REGISTER_NATIVE_FUNC(string_append, [](const std::vector<Value>& args) -> Value {
-    if (args.size() < 2) return "";
-    std::string str = valueToString(args[0]);
-    std::string argStr = valueToString(args[1]);
-    StringObject obj(str);
-    if (!argStr.empty()) obj.append(argStr[0]);
-    return obj.value;
-});
+REGISTER_NATIVE_FUNC(string_append,
+                     [](const std::vector<Value> &args) -> Value {
+                       if (args.size() < 2)
+                         return "";
+                       std::string str = valueToString(args[0]);
+                       std::string argStr = valueToString(args[1]);
+                       StringObject obj(str);
+                       if (!argStr.empty())
+                         obj.append(argStr[0]);
+                       return obj.value;
+                     });
 
-REGISTER_NATIVE_FUNC(string_contains, [](const std::vector<Value>& args) -> Value {
-    if (args.size() < 2) return 0.0;
-    std::string str = valueToString(args[0]);
-    std::string sub = valueToString(args[1]);
-    return StringObject(str).contains(sub);
-});
+REGISTER_NATIVE_FUNC(string_contains,
+                     [](const std::vector<Value> &args) -> Value {
+                       if (args.size() < 2)
+                         return 0.0;
+                       std::string str = valueToString(args[0]);
+                       std::string sub = valueToString(args[1]);
+                       return StringObject(str).contains(sub);
+                     });
 
 #endif
 // --- End File: lang/do/string.h ---
@@ -27314,6 +27340,7 @@ REGISTER_NATIVE_FUNC(string_contains, [](const std::vector<Value>& args) -> Valu
 // --- Begin File: lang/do/do_add.h ---
 #ifndef DO_ADD_H
 #define DO_ADD_H
+
 
 inline double do_add(double a, double b) {
     return a + b;

@@ -2,14 +2,13 @@
 #define EVALUATOR_H
 
 #include "ast.h"
+#include "native_registry.h"
 #include <unordered_map>
 #include <variant>
 #include <string>
 #include <iostream>
 #include <memory>
 #include <functional>
-
-using Value = std::variant<double, std::string>;
 
 struct ReturnException {
     Value value;
@@ -23,67 +22,11 @@ inline void printValue(const Value& val) {
     }
 }
 
-inline std::string valueToString(const Value& val) {
-    if (std::holds_alternative<double>(val)) {
-        double d = std::get<double>(val);
-        if (d == static_cast<long long>(d)) {
-            return std::to_string(static_cast<long long>(d));
-        }
-        return std::to_string(d);
-    }
-    return std::get<std::string>(val);
-}
-
-inline double valueToDouble(const Value& val) {
-    if (std::holds_alternative<double>(val)) return std::get<double>(val);
-    try { return std::stod(std::get<std::string>(val)); } catch (...) { return 0.0; }
-}
-
 inline std::string readInputLine() {
     std::string line;
     std::getline(std::cin, line);
     return line;
 }
-
-using NativeFunction = std::function<Value(const std::vector<Value>& args)>;
-
-class NativeRegistry {
-private:
-    std::unordered_map<std::string, NativeFunction> functions;
-
-    NativeRegistry() = default;
-
-public:
-    static NativeRegistry& instance() {
-        static NativeRegistry reg;
-        return reg;
-    }
-
-    void registerFunc(const std::string& name, NativeFunction fn) {
-        functions[name] = std::move(fn);
-    }
-
-    bool hasFunc(const std::string& name) const {
-        return functions.find(name) != functions.end();
-    }
-
-    Value call(const std::string& name, const std::vector<Value>& args) const {
-        auto it = functions.find(name);
-        if (it != functions.end()) {
-            return it->second(args);
-        }
-        return 0.0;
-    }
-};
-
-struct NativeFunctionRegistrar {
-    NativeFunctionRegistrar(const std::string& name, NativeFunction fn) {
-        NativeRegistry::instance().registerFunc(name, fn);
-    }
-};
-
-#define REGISTER_NATIVE_FUNC(name, fn) \
-    static NativeFunctionRegistrar _registrar_##name(#name, fn);
 
 #include "../../lang/do/do_add.h"
 #include "../../lang/do/string.h"

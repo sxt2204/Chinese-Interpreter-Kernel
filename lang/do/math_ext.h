@@ -1,6 +1,7 @@
 #ifndef MATH_EXT_H
 #define MATH_EXT_H
 
+#include "../../source/interpreter/native_registry.h"
 #include <cmath>
 #include <algorithm>
 

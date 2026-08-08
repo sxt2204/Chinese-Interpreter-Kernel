@@ -10,7 +10,7 @@ def bundle():
 
     header_content.append("// ==========================================================================\n")
     header_content.append("//   Chinese Compiler Kernel v0.2.0 - Single Header Library (全功能单头文件发布包)\n")
-    header_content.append("//   内置 nlohmann/json + 完整 lang/ 字典与 C++ 扩展，真正实现零依赖与即插即用！\n")
+    header_content.append("//   内置 nlohmann/json + 独立 native_registry.h + 完整 lang/ 字典与 C++ 扩展！\n")
     header_content.append("//   GitHub: https://github.com/sxt2204/Chinese-Interpreter-Kernel\n")
     header_content.append("// ==========================================================================\n\n")
     header_content.append("#ifndef CHINESE_COMPILER_SINGLE_HEADER_HPP\n")
@@ -80,6 +80,7 @@ def bundle():
     files_to_bundle = [
         "source/interpreter/includes.h",
         "source/interpreter/json.hpp",
+        "source/interpreter/native_registry.h",
         "source/interpreter/ast.h",
         "source/interpreter/parser.h",
         "source/interpreter/evaluator.h",
@@ -122,7 +123,7 @@ def bundle():
     with open(output_path, "w", encoding="utf-8") as out:
         out.writelines(header_content)
 
-    print(f"[SUCCESS] 成功打包生成内嵌完整 lang/ 字典与 json.hpp 的单头文件库: {output_path}")
+    print(f"[SUCCESS] 成功打包生成包含 native_registry.h 的单头文件库: {output_path}")
 
 if __name__ == "__main__":
     bundle()

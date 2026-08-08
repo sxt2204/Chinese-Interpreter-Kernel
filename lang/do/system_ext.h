@@ -1,6 +1,7 @@
 #ifndef SYSTEM_EXT_H
 #define SYSTEM_EXT_H
 
+#include "../../source/interpreter/native_registry.h"
 #include <ctime>
 #include <thread>
 #include <chrono>
