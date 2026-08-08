@@ -1,5 +1,6 @@
 # Compiled binaries
 test
+ide
 *.o
 *.a
 *.so
@@ -10,6 +11,7 @@ test
 .DS_Store
 .vscode/
 .idea/
+compile_commands.json
 
 # Compiled folders
 output/
