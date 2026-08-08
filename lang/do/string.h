@@ -1,6 +1,7 @@
 #ifndef CUSTOM_STRING_H
 #define CUSTOM_STRING_H
 
+#include "../../source/interpreter/native_registry.h"
 #include <algorithm>
 #include <cctype>
 #include <string>
