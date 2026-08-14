@@ -17,5 +17,16 @@ endif()
 # Main test executable
 add_executable(test test.cpp)
 
+# Cross-platform OpenGL/GLUT linking
+find_package(OpenGL REQUIRED)
+if (APPLE)
+    # macOS natively supports GLUT as a framework
+    find_library(GLUT_LIBRARY GLUT)
+    target_link_libraries(test PRIVATE OpenGL::GL ${GLUT_LIBRARY})
+else()
+    find_package(GLUT REQUIRED)
+    target_link_libraries(test PRIVATE OpenGL::GL GLUT::GLUT)
+endif()
+
 # Output directory setting
 set_target_properties(test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")

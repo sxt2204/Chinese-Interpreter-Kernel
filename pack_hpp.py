@@ -91,6 +91,7 @@ def bundle():
         "lang/do/io_ext.h",
         "lang/do/system_ext.h",
         "lang/do/file_ext.h",
+        "lang/do/opengl_ext.h",
         "source/api.hpp"
     ]
 
