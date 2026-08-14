@@ -75,7 +75,9 @@ inline std::vector<Token> tokenize(const std::string& code) {
 
         if (std::isdigit(static_cast<unsigned char>(c))) {
             std::string num = "";
-            while (i < code.length() && std::isdigit(static_cast<unsigned char>(code[i]))) {
+            bool hasDot = false;
+            while (i < code.length() && (std::isdigit(static_cast<unsigned char>(code[i])) || (!hasDot && code[i] == '.'))) {
+                if (code[i] == '.') hasDot = true;
                 num += code[i++];
             }
             tokens.push_back({TokenType::Number, num});

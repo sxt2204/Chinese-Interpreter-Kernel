@@ -25889,7 +25889,9 @@ inline std::vector<Token> tokenize(const std::string& code) {
 
         if (std::isdigit(static_cast<unsigned char>(c))) {
             std::string num = "";
-            while (i < code.length() && std::isdigit(static_cast<unsigned char>(code[i]))) {
+            bool hasDot = false;
+            while (i < code.length() && (std::isdigit(static_cast<unsigned char>(code[i])) || (!hasDot && code[i] == '.'))) {
+                if (code[i] == '.') hasDot = true;
                 num += code[i++];
             }
             tokens.push_back({TokenType::Number, num});
@@ -26797,12 +26799,55 @@ inline void loadEmbeddedLangRules() {
     }
 })raw_json",
         R"raw_json({
+    "title": "opengl_extension",
     "keywords": {
-        "设置画笔颜色（{0}，{1}，{2}）": "opengl_set_color({0}, {1}, {2})",
-        "绘制点（{0}，{1}）": "opengl_draw_point({0}, {1})",
-        "绘制直线（{0}，{1}，{2}，{3}）": "opengl_draw_line({0}, {1}, {2}, {3})",
-        "绘制矩形（{0}，{1}，{2}，{3}）": "opengl_draw_rect({0}, {1}, {2}, {3})",
-        "显示绘图窗口（）": "opengl_show_window()"
+        "设置画笔颜色（{1}，{2}，{3}）": {
+            "to": "opengl_set_color（{1}，{2}，{3}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" },
+                { "name": "{2}", "type": "double" },
+                { "name": "{3}", "type": "double" }
+            ],
+            "do": "opengl_ext.h"
+        },
+        "绘制点（{1}，{2}）": {
+            "to": "opengl_draw_point（{1}，{2}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" },
+                { "name": "{2}", "type": "double" }
+            ],
+            "do": "opengl_ext.h"
+        },
+        "绘制直线（{1}，{2}，{3}，{4}）": {
+            "to": "opengl_draw_line（{1}，{2}，{3}，{4}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" },
+                { "name": "{2}", "type": "double" },
+                { "name": "{3}", "type": "double" },
+                { "name": "{4}", "type": "double" }
+            ],
+            "do": "opengl_ext.h"
+        },
+        "绘制矩形（{1}，{2}，{3}，{4}）": {
+            "to": "opengl_draw_rect（{1}，{2}，{3}，{4}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" },
+                { "name": "{2}", "type": "double" },
+                { "name": "{3}", "type": "double" },
+                { "name": "{4}", "type": "double" }
+            ],
+            "do": "opengl_ext.h"
+        },
+        "显示绘图窗口（）": {
+            "to": "opengl_show_window（）",
+            "type": "function",
+            "params": [],
+            "do": "opengl_ext.h"
+        }
     }
 })raw_json",
         R"raw_json({
