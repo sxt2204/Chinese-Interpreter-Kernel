@@ -20,6 +20,9 @@ static float gl_current_r = 0.0f;
 static float gl_current_g = 0.0f;
 static float gl_current_b = 0.0f;
 
+// 窗口标题
+static std::string gl_window_title = "中文编程 - OpenGL绘图窗口";
+
 // 1. 设置颜色
 REGISTER_NATIVE_FUNC(opengl_set_color, [](const std::vector<Value>& args) -> Value {
     if (args.size() < 3) return 0.0;
@@ -83,7 +86,16 @@ REGISTER_NATIVE_FUNC(opengl_draw_rect, [](const std::vector<Value>& args) -> Val
     return 1.0;
 });
 
-// 5. 显示窗口 (主循环，会阻塞)
+// 5. 设置窗口标题
+REGISTER_NATIVE_FUNC(opengl_set_window_title, [](const std::vector<Value>& args) -> Value {
+    if (args.size() < 1) return 0.0;
+    if (std::holds_alternative<std::string>(args[0])) {
+        gl_window_title = std::get<std::string>(args[0]);
+    }
+    return 1.0;
+});
+
+// 6. 显示窗口 (主循环，会阻塞)
 REGISTER_NATIVE_FUNC(opengl_show_window, [](const std::vector<Value>& args) -> Value {
     int argc = 1;
     char* argv[1] = { (char*)"ChineseCompiler" };
@@ -91,7 +103,7 @@ REGISTER_NATIVE_FUNC(opengl_show_window, [](const std::vector<Value>& args) -> V
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(800, 600);
-    glutCreateWindow("中文编程 - OpenGL绘图窗口");
+    glutCreateWindow(gl_window_title.c_str());
     
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // 白色背景
     glMatrixMode(GL_PROJECTION);

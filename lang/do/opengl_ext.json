@@ -42,6 +42,14 @@
             ],
             "do": "opengl_ext.h"
         },
+        "设置窗口标题（{1}）": {
+            "to": "opengl_set_window_title（{1}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "string" }
+            ],
+            "do": "opengl_ext.h"
+        },
         "显示绘图窗口（）": {
             "to": "opengl_show_window（）",
             "type": "function",
