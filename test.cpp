@@ -13,6 +13,13 @@ int main(){
         显示绘图窗口（）
     )";
     chinese_compiler::Interpreter interpreter;
-    interpreter.runDirect(a, false);
+    auto res = interpreter.execute(a);
+    std::cout << "[DEBUG] Replaced Code:\n" << res.replacedCode << "\n";
+    std::cout << "[DEBUG] Tokens count: " << res.tokens.size() << "\n";
+    for(auto t : res.tokens) {
+        std::cout << "Token: type=" << (int)t.type << ", value='" << t.value << "'\n";
+    }
+    std::cout << "[DEBUG] AST:\n" << res.astTree << "\n";
+    if (!res.errorMessage.empty()) std::cout << "[ERROR] " << res.errorMessage << "\n";
     return 0;
 }

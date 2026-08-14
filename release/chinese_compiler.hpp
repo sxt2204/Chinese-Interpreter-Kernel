@@ -26198,11 +26198,12 @@ public:
     std::vector<std::unique_ptr<ASTNode>> parseProgram() {
         std::vector<std::unique_ptr<ASTNode>> stmts;
         while (peek().type != TokenType::Eof) {
+            size_t startPos = pos;
             auto stmt = parseStatement();
             if (stmt) stmts.push_back(std::move(stmt));
-            else {
+            else if (startPos == pos) {
                 if (peek().type == TokenType::Eof) break;
-                consume();
+                consume(); // Prevent infinite loop on invalid syntax
             }
         }
         return stmts;
