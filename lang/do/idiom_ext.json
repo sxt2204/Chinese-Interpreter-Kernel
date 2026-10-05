@@ -1,0 +1,13 @@
+{
+    "title": "idiom_extension",
+    "keywords": {
+        "查询成语（{1}）": {
+            "to": "idiom_query（{1}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "string" }
+            ],
+            "do": "idiom_ext.h"
+        }
+    }
+}

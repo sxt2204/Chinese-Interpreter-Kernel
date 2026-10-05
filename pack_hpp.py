@@ -92,6 +92,8 @@ def bundle():
         "lang/do/system_ext.h",
         "lang/do/file_ext.h",
         "lang/do/opengl_ext.h",
+        "lang/do/idioms_data.h",
+        "lang/do/idiom_ext.h",
         "source/api.hpp"
     ]
 
@@ -123,7 +125,6 @@ def bundle():
 
     with open(output_path, "w", encoding="utf-8") as out:
         out.writelines(header_content)
-        out.write("\n/*" + ("*" * 9500000) + "*/\n")
 
     print(f"[SUCCESS] 成功打包生成包含 native_registry.h 的单头文件库: {output_path}")
 

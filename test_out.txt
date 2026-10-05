@@ -1,0 +1,71 @@
+[LOG] 开始解析语言规则库...
+[LOG] 正在加载文件: lang/calc/consts.json
+[SUCCESS] 模块 [consts] 加载完成，成功注入 24 条词条
+[LOG] 正在加载文件: lang/calc/op.json
+[SUCCESS] 模块 [operators] 加载完成，成功注入 17 条词条
+[LOG] 正在加载文件: lang/calc/types.json
+[SUCCESS] 模块 [types] 加载完成，成功注入 24 条词条
+[LOG] 正在加载文件: lang/control/control_flow.json
+[SUCCESS] 模块 [control_flow] 加载完成，成功注入 10 条词条
+[LOG] 正在加载文件: lang/control/comp.json
+[SUCCESS] 模块 [comp] 加载完成，成功注入 10 条词条
+[LOG] 正在加载文件: lang/functions/functions_define.json
+[SUCCESS] 模块 [functions] 加载完成，成功注入 10 条词条
+[LOG] 正在加载文件: lang/io/io_main.json
+[SUCCESS] 模块 [io] 加载完成，成功注入 8 条词条
+[LOG] 正在扫描自定义功能目录: lang/do
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/system_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/system_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/system_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/system_ext.h
+[SUCCESS] 自定义功能模块 [system_extension] (system_ext.json) 加载完成，注入 4 条词条
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/file_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/file_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/file_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/file_ext.h
+[SUCCESS] 自定义功能模块 [file_extension] (file_ext.json) 加载完成，注入 4 条词条
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/io_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/io_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/io_ext.h
+[SUCCESS] 自定义功能模块 [io_extension] (io_ext.json) 加载完成，注入 0 条词条
+[SUCCESS] 自定义功能模块 [这里写这个文件的标题] (格式.json) 加载完成，注入 0 条词条
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/string.h
+[SUCCESS] 自定义功能模块 [string_extension] (string.json) 加载完成，注入 6 条词条
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/do_add.h
+[SUCCESS] 自定义功能模块 [add_extension] (do_add.json) 加载完成，注入 1 条词条
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/math_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/math_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/math_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/math_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/math_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/math_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/math_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/math_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/math_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/math_ext.h
+[SUCCESS] 自定义功能模块 [math_extension] (math_ext.json) 加载完成，注入 10 条词条
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/idiom_ext.h
+[SUCCESS] 自定义功能模块 [idiom_extension] (idiom_ext.json) 加载完成，注入 1 条词条
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 校验并装载自定义 C++ 拓展实现: lang/do/opengl_ext.h
+[SUCCESS] 自定义功能模块 [opengl_extension] (opengl_ext.json) 加载完成，注入 21 条词条
+[LOG] 规则初始化结束，符号映射表累计存入 150 条映射 (总规则数: 150)
