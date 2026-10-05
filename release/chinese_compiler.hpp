@@ -26851,6 +26851,128 @@ inline void loadEmbeddedLangRules() {
             ],
             "do": "opengl_ext.h"
         },
+        "设置背景颜色（{1}，{2}，{3}）": {
+            "to": "opengl_set_bg_color（{1}，{2}，{3}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" },
+                { "name": "{2}", "type": "double" },
+                { "name": "{3}", "type": "double" }
+            ],
+            "do": "opengl_ext.h"
+        },
+        "清空画布（）": {
+            "to": "opengl_clear_canvas（）",
+            "type": "function",
+            "params": [],
+            "do": "opengl_ext.h"
+        },
+        "设置线条粗细（{1}）": {
+            "to": "opengl_set_line_width（{1}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" }
+            ],
+            "do": "opengl_ext.h"
+        },
+        "设置画笔粗细（{1}）": {
+            "to": "opengl_set_line_width（{1}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" }
+            ],
+            "do": "opengl_ext.h"
+        },
+        "设置点大小（{1}）": {
+            "to": "opengl_set_point_size（{1}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" }
+            ],
+            "do": "opengl_ext.h"
+        },
+        "绘制三角形（{1}，{2}，{3}，{4}，{5}，{6}）": {
+            "to": "opengl_draw_triangle（{1}，{2}，{3}，{4}，{5}，{6}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" },
+                { "name": "{2}", "type": "double" },
+                { "name": "{3}", "type": "double" },
+                { "name": "{4}", "type": "double" },
+                { "name": "{5}", "type": "double" },
+                { "name": "{6}", "type": "double" }
+            ],
+            "do": "opengl_ext.h"
+        },
+        "绘制圆形（{1}，{2}，{3}）": {
+            "to": "opengl_draw_circle（{1}，{2}，{3}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" },
+                { "name": "{2}", "type": "double" },
+                { "name": "{3}", "type": "double" }
+            ],
+            "do": "opengl_ext.h"
+        },
+        "开始绘制多边形（）": {
+            "to": "opengl_begin_polygon（）",
+            "type": "function",
+            "params": [],
+            "do": "opengl_ext.h"
+        },
+        "添加多边形顶点（{1}，{2}）": {
+            "to": "opengl_add_vertex（{1}，{2}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" },
+                { "name": "{2}", "type": "double" }
+            ],
+            "do": "opengl_ext.h"
+        },
+        "结束绘制多边形（）": {
+            "to": "opengl_end_polygon（）",
+            "type": "function",
+            "params": [],
+            "do": "opengl_ext.h"
+        },
+        "平移画布（{1}，{2}）": {
+            "to": "opengl_translate（{1}，{2}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" },
+                { "name": "{2}", "type": "double" }
+            ],
+            "do": "opengl_ext.h"
+        },
+        "旋转画布（{1}）": {
+            "to": "opengl_rotate（{1}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" }
+            ],
+            "do": "opengl_ext.h"
+        },
+        "缩放画布（{1}，{2}）": {
+            "to": "opengl_scale（{1}，{2}）",
+            "type": "function",
+            "params": [
+                { "name": "{1}", "type": "double" },
+                { "name": "{2}", "type": "double" }
+            ],
+            "do": "opengl_ext.h"
+        },
+        "保存画布状态（）": {
+            "to": "opengl_push_matrix（）",
+            "type": "function",
+            "params": [],
+            "do": "opengl_ext.h"
+        },
+        "恢复画布状态（）": {
+            "to": "opengl_pop_matrix（）",
+            "type": "function",
+            "params": [],
+            "do": "opengl_ext.h"
+        },
         "显示绘图窗口（）": {
             "to": "opengl_show_window（）",
             "type": "function",
@@ -27646,6 +27768,11 @@ static float gl_current_b = 0.0f;
 // 窗口标题
 static std::string gl_window_title = "中文编程 - OpenGL绘图窗口";
 
+// 背景颜色状态
+static float gl_bg_r = 1.0f;
+static float gl_bg_g = 1.0f;
+static float gl_bg_b = 1.0f;
+
 // 1. 设置颜色
 REGISTER_NATIVE_FUNC(opengl_set_color, [](const std::vector<Value>& args) -> Value {
     if (args.size() < 3) return 0.0;
@@ -27709,6 +27836,159 @@ REGISTER_NATIVE_FUNC(opengl_draw_rect, [](const std::vector<Value>& args) -> Val
     return 1.0;
 });
 
+// 新增功能 1: 设置背景颜色
+REGISTER_NATIVE_FUNC(opengl_set_bg_color, [](const std::vector<Value>& args) -> Value {
+    if (args.size() < 3) return 0.0;
+    gl_bg_r = static_cast<float>(valueToDouble(args[0]));
+    gl_bg_g = static_cast<float>(valueToDouble(args[1]));
+    gl_bg_b = static_cast<float>(valueToDouble(args[2]));
+    return 1.0;
+});
+
+// 新增功能 2: 清空画布
+REGISTER_NATIVE_FUNC(opengl_clear_canvas, [](const std::vector<Value>& args) -> Value {
+    gl_render_queue.push_back([=]() {
+        glClear(GL_COLOR_BUFFER_BIT);
+    });
+    return 1.0;
+});
+
+// 新增功能 3: 设置画笔粗细
+REGISTER_NATIVE_FUNC(opengl_set_line_width, [](const std::vector<Value>& args) -> Value {
+    if (args.size() < 1) return 0.0;
+    float width = static_cast<float>(valueToDouble(args[0]));
+    gl_render_queue.push_back([=]() {
+        glLineWidth(width);
+    });
+    return 1.0;
+});
+
+// 新增功能 4: 设置点大小
+REGISTER_NATIVE_FUNC(opengl_set_point_size, [](const std::vector<Value>& args) -> Value {
+    if (args.size() < 1) return 0.0;
+    float size = static_cast<float>(valueToDouble(args[0]));
+    gl_render_queue.push_back([=]() {
+        glPointSize(size);
+    });
+    return 1.0;
+});
+
+// 新增功能 5: 绘制三角形
+REGISTER_NATIVE_FUNC(opengl_draw_triangle, [](const std::vector<Value>& args) -> Value {
+    if (args.size() < 6) return 0.0;
+    float x1 = static_cast<float>(valueToDouble(args[0]));
+    float y1 = static_cast<float>(valueToDouble(args[1]));
+    float x2 = static_cast<float>(valueToDouble(args[2]));
+    float y2 = static_cast<float>(valueToDouble(args[3]));
+    float x3 = static_cast<float>(valueToDouble(args[4]));
+    float y3 = static_cast<float>(valueToDouble(args[5]));
+    
+    gl_render_queue.push_back([=]() {
+        glBegin(GL_TRIANGLES);
+        glVertex2f(x1, y1);
+        glVertex2f(x2, y2);
+        glVertex2f(x3, y3);
+        glEnd();
+    });
+    return 1.0;
+});
+
+// 新增功能 6: 绘制圆形
+#include <math.h>
+REGISTER_NATIVE_FUNC(opengl_draw_circle, [](const std::vector<Value>& args) -> Value {
+    if (args.size() < 3) return 0.0;
+    float x = static_cast<float>(valueToDouble(args[0]));
+    float y = static_cast<float>(valueToDouble(args[1]));
+    float radius = static_cast<float>(valueToDouble(args[2]));
+    
+    gl_render_queue.push_back([=]() {
+        glBegin(GL_POLYGON);
+        for(int i = 0; i < 100; i++) {
+            float theta = 2.0f * 3.1415926f * float(i) / float(100);
+            float cx = radius * cosf(theta);
+            float cy = radius * sinf(theta);
+            glVertex2f(x + cx, y + cy);
+        }
+        glEnd();
+    });
+    return 1.0;
+});
+
+// 新增功能 7: 开始绘制多边形
+REGISTER_NATIVE_FUNC(opengl_begin_polygon, [](const std::vector<Value>& args) -> Value {
+    gl_render_queue.push_back([=]() {
+        glBegin(GL_POLYGON);
+    });
+    return 1.0;
+});
+
+// 新增功能 8: 添加多边形顶点
+REGISTER_NATIVE_FUNC(opengl_add_vertex, [](const std::vector<Value>& args) -> Value {
+    if (args.size() < 2) return 0.0;
+    float x = static_cast<float>(valueToDouble(args[0]));
+    float y = static_cast<float>(valueToDouble(args[1]));
+    gl_render_queue.push_back([=]() {
+        glVertex2f(x, y);
+    });
+    return 1.0;
+});
+
+// 新增功能 9: 结束绘制多边形
+REGISTER_NATIVE_FUNC(opengl_end_polygon, [](const std::vector<Value>& args) -> Value {
+    gl_render_queue.push_back([=]() {
+        glEnd();
+    });
+    return 1.0;
+});
+
+// 新增功能 10: 平移画布
+REGISTER_NATIVE_FUNC(opengl_translate, [](const std::vector<Value>& args) -> Value {
+    if (args.size() < 2) return 0.0;
+    float tx = static_cast<float>(valueToDouble(args[0]));
+    float ty = static_cast<float>(valueToDouble(args[1]));
+    gl_render_queue.push_back([=]() {
+        glTranslatef(tx, ty, 0.0f);
+    });
+    return 1.0;
+});
+
+// 新增功能 11: 旋转画布 (度数)
+REGISTER_NATIVE_FUNC(opengl_rotate, [](const std::vector<Value>& args) -> Value {
+    if (args.size() < 1) return 0.0;
+    float angle = static_cast<float>(valueToDouble(args[0]));
+    gl_render_queue.push_back([=]() {
+        glRotatef(angle, 0.0f, 0.0f, 1.0f); // 2D 主要是绕 Z 轴旋转
+    });
+    return 1.0;
+});
+
+// 新增功能 12: 缩放画布
+REGISTER_NATIVE_FUNC(opengl_scale, [](const std::vector<Value>& args) -> Value {
+    if (args.size() < 2) return 0.0;
+    float sx = static_cast<float>(valueToDouble(args[0]));
+    float sy = static_cast<float>(valueToDouble(args[1]));
+    gl_render_queue.push_back([=]() {
+        glScalef(sx, sy, 1.0f);
+    });
+    return 1.0;
+});
+
+// 新增功能 13: 保存画布状态
+REGISTER_NATIVE_FUNC(opengl_push_matrix, [](const std::vector<Value>& args) -> Value {
+    gl_render_queue.push_back([=]() {
+        glPushMatrix();
+    });
+    return 1.0;
+});
+
+// 新增功能 14: 恢复画布状态
+REGISTER_NATIVE_FUNC(opengl_pop_matrix, [](const std::vector<Value>& args) -> Value {
+    gl_render_queue.push_back([=]() {
+        glPopMatrix();
+    });
+    return 1.0;
+});
+
 // 5. 设置窗口标题
 REGISTER_NATIVE_FUNC(opengl_set_window_title, [](const std::vector<Value>& args) -> Value {
     if (args.size() < 1) return 0.0;
@@ -27728,13 +28008,17 @@ REGISTER_NATIVE_FUNC(opengl_show_window, [](const std::vector<Value>& args) -> V
     glutInitWindowSize(800, 600);
     glutCreateWindow(gl_window_title.c_str());
     
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // 白色背景
+    glClearColor(gl_bg_r, gl_bg_g, gl_bg_b, 1.0f); // 使用设置的背景色
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(0.0, 800.0, 0.0, 600.0);   // 左下角(0,0)，右上角(800,600)
+    glMatrixMode(GL_MODELVIEW);           // 切换回模型视图用于变换
+    glLoadIdentity();
     
     glutDisplayFunc([]() {
+        glClearColor(gl_bg_r, gl_bg_g, gl_bg_b, 1.0f); // 动态更新背景色
         glClear(GL_COLOR_BUFFER_BIT);
+        glLoadIdentity(); // 每次绘制重置变换矩阵
         
         // 默认绘制颜色为黑色
         glColor3f(0.0f, 0.0f, 0.0f);
