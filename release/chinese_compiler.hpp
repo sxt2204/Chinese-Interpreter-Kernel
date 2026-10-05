@@ -27751,10 +27751,19 @@ REGISTER_NATIVE_FUNC(do_file_exists, [](const std::vector<Value>& args) -> Value
 #include <functional>
 #include <iostream>
 
-#ifdef __APPLE__
+#ifdef _WIN32
+#include <windows.h>
+#include <GL/gl.h>
+#pragma comment(lib, "opengl32.lib")
+#pragma comment(lib, "gdi32.lib")
+#elif defined(__APPLE__)
 #include <GLUT/glut.h>
 #else
-#include <GL/glut.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <GL/gl.h>
+#include <GL/glx.h>
+#include <unistd.h>
 #endif
 
 // 绘制队列：存储所有的 OpenGL 绘制闭包
@@ -27998,40 +28007,121 @@ REGISTER_NATIVE_FUNC(opengl_set_window_title, [](const std::vector<Value>& args)
     return 1.0;
 });
 
-// 6. 显示窗口 (主循环，会阻塞)
-REGISTER_NATIVE_FUNC(opengl_show_window, [](const std::vector<Value>& args) -> Value {
-    int argc = 1;
-    char* argv[1] = { (char*)"ChineseCompiler" };
-    
+// 原生窗口抽象
+#ifdef _WIN32
+LRESULT CALLBACK os_WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+    switch (message) {
+        case WM_CLOSE: PostQuitMessage(0); return 0;
+        default: return DefWindowProc(hWnd, message, wParam, lParam);
+    }
+}
+void os_show_window() {
+    HINSTANCE hInstance = GetModuleHandle(NULL);
+    WNDCLASS wc = {0};
+    wc.lpfnWndProc = os_WndProc;
+    wc.hInstance = hInstance;
+    wc.lpszClassName = "ChineseCompilerGL";
+    RegisterClass(&wc);
+
+    HWND hWnd = CreateWindow("ChineseCompilerGL", gl_window_title.c_str(), WS_OVERLAPPEDWINDOW | WS_VISIBLE, 100, 100, 800, 600, NULL, NULL, hInstance, NULL);
+    HDC hDC = GetDC(hWnd);
+    PIXELFORMATDESCRIPTOR pfd = { sizeof(PIXELFORMATDESCRIPTOR), 1, PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER, PFD_TYPE_RGBA, 32, 0,0,0,0,0,0,0,0,0,0,0,0,0, 24, 8, 0,0,0,0,0,0 };
+    int pf = ChoosePixelFormat(hDC, &pfd);
+    SetPixelFormat(hDC, pf, &pfd);
+    HGLRC hRC = wglCreateContext(hDC);
+    wglMakeCurrent(hDC, hRC);
+
+    glClearColor(gl_bg_r, gl_bg_g, gl_bg_b, 1.0f);
+    glMatrixMode(GL_PROJECTION); glLoadIdentity();
+    glOrtho(0.0, 800.0, 0.0, 600.0, -1.0, 1.0);
+    glMatrixMode(GL_MODELVIEW); glLoadIdentity();
+
+    std::cout << "[OpenGL] 正在显示绘图窗口 (请关闭窗口以继续)..." << std::endl;
+
+    MSG msg; bool running = true;
+    while (running) {
+        while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+            if (msg.message == WM_QUIT) running = false;
+            TranslateMessage(&msg); DispatchMessage(&msg);
+        }
+        if (!running) break;
+        glClearColor(gl_bg_r, gl_bg_g, gl_bg_b, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glLoadIdentity();
+        glColor3f(0.0f, 0.0f, 0.0f);
+        for (const auto& func : gl_render_queue) func();
+        SwapBuffers(hDC);
+        Sleep(16);
+    }
+    wglMakeCurrent(NULL, NULL); wglDeleteContext(hRC); ReleaseDC(hWnd, hDC); DestroyWindow(hWnd);
+}
+#elif defined(__APPLE__)
+void os_show_window() {
+    int argc = 1; char* argv[1] = { (char*)"ChineseCompiler" };
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(800, 600);
     glutCreateWindow(gl_window_title.c_str());
-    
-    glClearColor(gl_bg_r, gl_bg_g, gl_bg_b, 1.0f); // 使用设置的背景色
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(0.0, 800.0, 0.0, 600.0);   // 左下角(0,0)，右上角(800,600)
-    glMatrixMode(GL_MODELVIEW);           // 切换回模型视图用于变换
-    glLoadIdentity();
+    glClearColor(gl_bg_r, gl_bg_g, gl_bg_b, 1.0f);
+    glMatrixMode(GL_PROJECTION); glLoadIdentity();
+    glOrtho(0.0, 800.0, 0.0, 600.0, -1.0, 1.0);
+    glMatrixMode(GL_MODELVIEW); glLoadIdentity();
     
     glutDisplayFunc([]() {
-        glClearColor(gl_bg_r, gl_bg_g, gl_bg_b, 1.0f); // 动态更新背景色
+        glClearColor(gl_bg_r, gl_bg_g, gl_bg_b, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        glLoadIdentity(); // 每次绘制重置变换矩阵
-        
-        // 默认绘制颜色为黑色
+        glLoadIdentity();
         glColor3f(0.0f, 0.0f, 0.0f);
-        
-        for (const auto& func : gl_render_queue) {
-            func();
-        }
-        
+        for (const auto& func : gl_render_queue) func();
         glFlush();
     });
-    
     std::cout << "[OpenGL] 正在显示绘图窗口 (请关闭窗口以继续)..." << std::endl;
-    glutMainLoop(); // 阻塞执行，直到用户关闭窗口 (视不同系统行为可能不同)
+    glutMainLoop();
+}
+#else
+void os_show_window() {
+    Display *display = XOpenDisplay(NULL);
+    if (!display) { std::cerr << "[错误] 无法连接到 X Server" << std::endl; return; }
+    Window root = DefaultRootWindow(display);
+    GLint att[] = { GLX_RGBA, GLX_DOUBLEBUFFER, None };
+    XVisualInfo *vi = glXChooseVisual(display, 0, att);
+    if (!vi) return;
+    Colormap cmap = XCreateColormap(display, root, vi->visual, AllocNone);
+    XSetWindowAttributes swa; swa.colormap = cmap; swa.event_mask = ExposureMask | KeyPressMask | StructureNotifyMask;
+    Window win = XCreateWindow(display, root, 0, 0, 800, 600, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
+    XMapWindow(display, win);
+    XStoreName(display, win, gl_window_title.c_str());
+    GLXContext glc = glXCreateContext(display, vi, NULL, GL_TRUE);
+    glXMakeCurrent(display, win, glc);
+
+    glClearColor(gl_bg_r, gl_bg_g, gl_bg_b, 1.0f);
+    glMatrixMode(GL_PROJECTION); glLoadIdentity();
+    glOrtho(0.0, 800.0, 0.0, 600.0, -1.0, 1.0);
+    glMatrixMode(GL_MODELVIEW); glLoadIdentity();
+
+    std::cout << "[OpenGL] 正在显示绘图窗口 (请按任意键关闭窗口以继续)..." << std::endl;
+
+    XEvent xev; bool running = true;
+    while (running) {
+        while (XPending(display)) {
+            XNextEvent(display, &xev);
+            if (xev.type == KeyPress) running = false;
+        }
+        glClearColor(gl_bg_r, gl_bg_g, gl_bg_b, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glLoadIdentity();
+        glColor3f(0.0f, 0.0f, 0.0f);
+        for (const auto& func : gl_render_queue) func();
+        glXSwapBuffers(display, win);
+        usleep(16000);
+    }
+    glXMakeCurrent(display, None, NULL); glXDestroyContext(display, glc); XDestroyWindow(display, win); XCloseDisplay(display);
+}
+#endif
+
+// 6. 显示窗口 (主循环，会阻塞)
+REGISTER_NATIVE_FUNC(opengl_show_window, [](const std::vector<Value>& args) -> Value {
+    os_show_window();
     return 1.0;
 });
 
