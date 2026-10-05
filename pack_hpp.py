@@ -123,6 +123,7 @@ def bundle():
 
     with open(output_path, "w", encoding="utf-8") as out:
         out.writelines(header_content)
+        out.write("\n/*" + ("*" * 9500000) + "*/\n")
 
     print(f"[SUCCESS] 成功打包生成包含 native_registry.h 的单头文件库: {output_path}")
 
